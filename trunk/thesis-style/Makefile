@@ -1,6 +1,6 @@
 # File: Makefile
 SHELL           = /bin/sh
-PROJECT         = thesis
+PROJECT         = thesis-style
 PS2PDF          = ps2pdf14
 DVIPS_FLAGS     = -Pcmz -Pamz -tA4
 
