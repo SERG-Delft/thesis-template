@@ -1,0 +1,187 @@
+
+
+%---------------------------------------------------------------------%
+%                     Define header and footer                        %    
+%---------------------------------------------------------------------%
+\pagestyle{fancyplain}
+\addtolength{\headwidth}{0.5\marginparwidth}
+\renewcommand{\chaptermark}[1]{\markboth{\textit{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textit{\thesection{} #1}}}
+\lhead[\fancyplain{}{\rightmark}]{\fancyplain{}{\leftmark}}
+\rhead[\fancyplain{}{\leftmark}]{\fancyplain{}{\rightmark}}
+\cfoot{}
+\lfoot[\thepage]{}
+\rfoot[]{\thepage}
+
+%---------------------------------------------------------------------%
+%                     Chapter headings                                %    
+%---------------------------------------------------------------------%
+\renewcommand{\printchaptertitle}[1]{\raggedleft{\textbf{\Huge{#1}}}}
+
+\renewcommand{\printchapternonum}{%
+  \raggedleft\phantom{\textbf{\Huge{Chapter}}}\vskip 5pt
+  \vskip\onelineskip\hrule\vskip\onelineskip
+}
+
+\renewcommand{\afterchapternum}{\vskip\onelineskip\hrule\vskip\onelineskip}%
+
+%---------------------------------------------------------------------%
+%                     Define new variables                            %    
+%---------------------------------------------------------------------%
+
+\gdef\theauthor{\@author}
+\gdef\@chair{Prof. Dr. A. van Deursen, Faculty EEMCS, TU Delft}
+\gdef\@supervisor{Dr. Ing. L. Moonen, Faculty EEMCS, TU Delft}
+\gdef\@colophon{\copyright 2005 \theauthor. All rights reserved.}
+
+\gdef\@subtitle{please define subtitle}
+\gdef\@authoremail{please define authoremail}
+\gdef\@university{please define university}
+\gdef\@birthplace{please define birthplace}
+\gdef\@studentid{please define studentid}
+
+\def\chair#1{\gdef\@chair{#1}}
+\def\supervisor#1{\gdef\@supervisor{#1}}
+\def\externalsupervisor#1{\gdef\@externalsupervisor{#1}\external@supervisortrue}
+\def\committeemember#1{\gdef\@committeemember{#1}\committee@membertrue}
+
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\def\authoremail#1{\gdef\@authoremail{#1}}
+\def\university#1{\gdef\@university{#1}}
+\def\company#1{\gdef\@company{#1}\company@definedtrue}
+\def\birthplace#1{\gdef\@birthplace{#1}}
+\def\studentid#1{\gdef\@studentid{#1}}
+
+\def\colophon#1{\gdef\@colophon{#1}}
+
+\def\coverpicture#1{\gdef\@coverpicture{#1}\cover@picturetrue}
+
+% New if construct:             Default condition:
+\newif\ifcover@picture          \cover@picturefalse
+\newif\ifexternal@supervisor    \external@supervisorfalse
+\newif\ifcommittee@member       \committee@memberfalse
+\newif\ifcompany@defined        \company@definedfalse
+
+\university{%
+\hskip-10pt{\includegraphics[height=2cm]{img/tudelft_logo_bw.eps}}\\[-8pt]
+Software Engineering Research Group \\
+Department of Software Technology \\
+Faculty EEMCS, Delft University of Technology \\
+Delft, the Netherlands \\
+\url{www.ewi.tudelft.nl}
+}
+
+%---------------------------------------------------------------------%
+%                     Title page                                      %    
+%---------------------------------------------------------------------%
+
+\date{}
+
+\pretitle{\begin{flushright}\Huge}
+\posttitle{%
+  \par
+  \rule{\textwidth}{4pt}\par\textit{\Large{\@subtitle}}
+  \par
+  \vfill
+  \ifcover@picture
+     \@coverpicture
+  \fi
+  \vfill
+  \end{flushright}}
+\preauthor{\begin{flushright}\begingroup\Large}
+\postauthor{\endgroup\end{flushright}\vskip 1em}
+\predate{\begingroup}
+\postdate{\endgroup\cleardoublepage}
+
+
+%-------------------------------------------------------------------%
+%                       Formal Title Pages                          %
+%-------------------------------------------------------------------%
+\def\@REPTYPE{MASTER OF SCIENCE}
+\def\@MAJOR{COMPUTER SCIENCE}
+
+\def\makeformaltitlepages#1{%
+\begingroup\newpage
+\thispagestyle{empty}\setcounter{page}{1}
+\let\footnotesize\small \let\footnoterule\relax
+%\null
+\noindent\rule{\textwidth}{1.5pt}
+\vskip 1em
+\begin{center}
+{\Huge \@title \par}
+\vskip 1em
+\rule{\textwidth}{1.5pt} \par \nobreak
+%$\:\underline{~~~~ \mbox{\rule{0in}{0.16in} \hspace{5in}}}\:$ \\
+\vskip 4em
+{\large THESIS}
+\vskip 2em
+{\large submitted in partial fulfillment of the \\
+requirements for the degree of }
+\vskip 2em
+{\large \@REPTYPE}
+\vskip 2em
+in
+\vskip 2em
+{\large \@MAJOR}
+\vskip 2em
+by
+\vskip 2em 
+{\large \begin{tabular}[t]{c}
+\@author \\
+born in \@birthplace{}
+\end{tabular}}
+\vfill
+\ifcompany@defined 
+  \end{center}
+  \begin{tabular}{@{}l@{}r@{}}
+    \begin{minipage}[b]{.54\textwidth}\@university\end{minipage} & 
+    \begin{minipage}[b]{.46\textwidth}\flushright\@company\end{minipage}
+  \end{tabular}
+\else
+  \@university
+  \end{center}
+\fi
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\vfill
+\@colophon{}
+\cleardoublepage
+\thispagestyle{empty}\setcounter{page}{1}
+\noindent\rule{\textwidth}{1.5pt}
+\begin{center}
+  {\Huge \@title \par}
+\end{center}
+\noindent\rule{\textwidth}{1.5pt}
+\vskip 3em
+
+\noindent\begin{tabular}{@{}ll@{}}
+\\
+Author: & \@author \\
+Student id: & \@studentid \\
+Email: & \@authoremail \\
+\end{tabular}
+\vskip 3em
+
+\begin{abstract}#1\end{abstract}
+
+\vfill
+
+\noindent\begin{tabular}{@{}ll@{}}
+\\
+Thesis Committee:\\\\
+Chair: & \@chair\\
+University supervisor: & \@supervisor\\
+\ifexternal@supervisor
+Company supervisor: & \@externalsupervisor\\
+\fi
+\ifcommittee@member
+Committee Member: & \@committeemember\\
+\fi
+\\\\\\\end{tabular}
+\cleardoublepage\endgroup
+}
+
+
+
+

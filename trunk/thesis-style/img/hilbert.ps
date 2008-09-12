@@ -1,0 +1,48 @@
+%!PS
+%%Title: Hilbert Curves
+%%BoundingBox: 179 242 462 526
+
+/H 0.125 def
+/-H 0.125 neg def
+
+/North 0 def /South 1 def /East 2 def /West 3 def
+
+/MoveDict 1 dict def
+
+/Move
+{ MoveDict begin
+	/direction exch def
+	North direction eq {0 H rlineto} if
+	South direction eq {0 -H rlineto} if
+	East direction eq {H 0 rlineto} if
+	West direction eq {-H 0 rlineto} if
+  end
+} def
+
+/Hilbert
+{ 6 dict begin
+	/i exch def
+	/U exch def /L exch def /D exch def /R exch def
+	/j i 1 sub def
+ 	i 0 gt		% if i > 0 then
+		{ D R U L j Hilbert  R Move
+		  R D L U j Hilbert  D Move
+		  R D L U j Hilbert  L Move
+		  U L D R j Hilbert
+		} if
+   end
+} def
+
+/main
+{ 150 150 scale
+  .2 -0.5 translate
+  0.05 setlinewidth
+  newpath
+	1 4 moveto
+	East South West North 4 Hilbert
+  stroke
+  showpage
+} def
+
+main
+		  
