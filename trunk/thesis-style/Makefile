@@ -1,6 +1,6 @@
 # File: Makefile
 SHELL           = /bin/sh
-PROJECT         = thesis-style
+PROJECT         = thesis
 PS2PDF          = ps2pdf14
 DVIPS_FLAGS     = -Pcmz -Pamz -tA4
 
@@ -30,13 +30,11 @@ view: $(PROJECT).pdf
 force:
 	$(MAKE) -W $(PROJECT).tex
 
-dist:
-	(cd .. ; zip -r $(PROJECT)_`date +%Y%m%d`.zip $(PROJECT) -x \*/CVS/\* \*/auto/\*  )
-
 clean:
-	rm -f *.{out,brf,toc,lof,bbl,blg,bak,aux,dvi,ps,log} 
+	rm -f *.{out,brf,toc,lof,bbl,blg,bak,aux,dvi,ps,log} *~
 
-style-dist: pdf clean
+dist: pdf clean
 	( cd .. ; \
 	rm -rf thesis-style_`date +%Y%m%d`.zip ; \
-	zip -r thesis-style_`date +%Y%m%d`.zip thesis-style -x \*/CVS/\* \*/auto/\*   )
+	zip -r thesis-style_`date +%Y%m%d`.zip thesis-style -x \*/.svn/\* \*/auto/\*   )
+	cp thesis.pdf ../thesis-style_`date +%Y%m%d`.pdf
