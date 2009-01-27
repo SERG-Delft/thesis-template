@@ -3,9 +3,14 @@
 \usepackage{times}
 \usepackage{pslatex}
 \usepackage{url}
-%\usepackage{fancyheadings}
 \usepackage{mscthesis}
 \usepackage{lipsum} % standard filler text, only needed for demo
+
+% %% The package 'algorithm' is useful, but incompatible with memoir.
+% %% Cor-Paul Bezemer / http://homes.esat.kuleuven.be/~dvherten/esatthesis.html
+% %% suggest the following fix:
+\let\newfloat\undefined \usepackage{algorithmic} 
+\usepackage{algorithm}
 
 % Include right (LaTeX/PDFLaTeX) graphics package
 % (doesn't work under cygwin apperently)
