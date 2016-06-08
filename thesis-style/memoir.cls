@@ -9,8 +9,8 @@
 %%   Author: Peter Wilson  (herries dot press at earthlink dot net)
 %%           Herries Press
 %%   Copyright 2001--2011 Peter R. Wilson
-%%   Copyright 2011--     Lars Madsen
-%%   Maintainer: Lars Madsen (daleif at math dot au dot dk)
+%%   Copyright 2011--2013 Lars Madsen
+%%   Maintainer: Lars Madsen (daleif at imf dot au dot dk)
 %% 
 %% 
 %%   This work may be distributed and/or modified under the
@@ -28,8 +28,8 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{memoir}%
-  [2016/05/16 v3.7f configurable book, report, article document class]
-\newcommand\memversion{v3.7f, 2016/05/16}
+  [2013/05/30 v3.7b configurable book, report, article document class]
+\newcommand\memversion{v3.7b, 2013/05/30}
 \newcommand*{\@ptsize}{}
 \newcommand*{\@memptsize}{}
 \newlength{\onelineskip}
@@ -216,10 +216,6 @@
 \newcommand{\cmdprint}[1]{\texttt{\string#1}}
 \newcommand{\cmd}[1]{\cmdprint{#1}%
   \index{\expandafter\@gobble\string#1?\string\cmdprint{\string#1}}}
-
-\ifx\pdfextension\@undefined\else
-  \RequirePackage{luatex85}
-\fi
 
 \newif\ifm@mifpdf
   \m@mifpdffalse
@@ -686,9 +682,7 @@
   \fi
 
 \ifmem@noetex\relax\else
-  \ifx\e@alloc\@undefined
-    \IfFileExists{etex.sty}{\RequirePackage{etex}}{}
-  \fi
+  \IfFileExists{etex.sty}{\RequirePackage{etex}}{}
 \fi
 \providecommand*{\memoirpostopthook}{}
   \memoirpostopthook
@@ -1006,14 +1000,6 @@
   \setlength{\marginparsep}{#1}%
   \setlength{\marginparwidth}{#2}%
   \setlength{\marginparpush}{#3}}
-
-\newcommand\setfootins[2]{
-  \setlength{\skip\footins}{#1}
-  \setlength{\skip\footinsv@r}{#1}
-  \setlength{\skip\@mpfootins}{#2}
-  % not explicitly used
-  \setlength{\skip\@mpfootinsv@r}{#2}
-}
 
 \settrimmedsize{\stockheight}{\stockwidth}{*}
 \settrims{\z@}{\z@}
@@ -1576,8 +1562,8 @@
   \@memerror{The pagestyle '#1' is marked as an alias page style.^^J
     Modifying an alias page style may give unexpected results.^^J The
     alias chain resolves to the real page style '\@tempa', so try
-    issuing^^J \string\copypagestyle{#1}{\@tempa}^^J
-    before modifying '#1'}{} \fi }
+    issuing^^J \string\copypagestyle{#1}{\@tempa}^^J before before
+    modifying '#1'}{} \fi }
 
 \newcommand{\makeevenhead}[4]{%
   \mem@ps@safe@change{#1}
@@ -1631,12 +1617,12 @@
 \newcommand{\makeheadrule}[3]{%
   \mem@ps@safe@change{#1}%
   \@namedef{#1headrule}{%
-    \hrule\@width #2\@height #3 \vskip-#3}}
+    \@nameuse{#1headruleprefix}\hrule\@width #2\@height #3 \vskip-#3}}
 \newcommand{\makefootrule}[4]{%
   \mem@ps@safe@change{#1}%
   \@namedef{#1footrule}{%
     \vskip-#4\vskip-#3%
-    \hrule\@width #2\@height #3 \vskip #4}}
+    \@nameuse{#1footruleprefix}\hrule\@width #2\@height #3 \vskip #4}}
 
 \newcommand\makeheadfootruleprefix[3]{%
   \@namedef{#1headruleprefix}{#2}%
@@ -1750,12 +1736,7 @@
   \@namedef{#1@#3#2}{%
     \@nameuse{#1#3#2pl}\hb@xt@\@nameuse{#1#2runwidth}{\m@mhe@dreset%
       \nametest{#2}{head}\ifsamename\let\mem@hfboxer\mem@hvboxm\else\let\mem@hfboxer\mem@fvboxm\fi%
-      \mem@hfboxer{\nametest{#2}{foot}\ifsamename%
-          \begingroup% to prevent colors from bleeding into the footer
-          \@nameuse{#1#2ruleprefix}%
-          \@nameuse{#1#2rule}%
-          \endgroup%
-        \fi%
+      \mem@hfboxer{\nametest{#2}{foot}\ifsamename\@nameuse{#1#2rule}\fi%
         \hbox{%
           \rlap{%
             \parbox[\@nameuse{#1#2vplacement}]{\@nameuse{#1#2runwidth}}{%
@@ -1772,10 +1753,7 @@
               \mem@ps@entry@wrap{\@nameuse{#1#4#2r}}%
               \@nameuse{#1ps#2strut}}}%
         }%
-        \nametest{#2}{head}\ifsamename%
-          \@nameuse{#1#2ruleprefix}%
-          \@nameuse{#1#2rule}%
-        \fi%
+        \nametest{#2}{head}\ifsamename\@nameuse{#1#2rule}\fi%
       }}\@nameuse{#1#3#2pr}}%
   \@namedef{@#3#2}{\@nameuse{#1@#3#2}}%
 }
@@ -1968,7 +1946,7 @@
     \nametest{#2}{right}
     \ifsamename
       \@namedef{#1mark}##1{%
-        \@setclcnt{#1}{@memmarkcntra}%
+        \@setclcnt{#1}{@memmarkcntra}
         \advance\c@@memmarkcntra\m@ne
         \markright{%
           \memUChead{%
@@ -1987,7 +1965,7 @@
         I will assume you meant `both'}%
       \fi
     \@namedef{#1mark}##1{%
-      \@setclcnt{#1}{@memmarkcntra}%
+      \@setclcnt{#1}{@memmarkcntra}
       \advance\c@@memmarkcntra\m@ne
       \markboth{%
         \memUChead{%
@@ -2377,13 +2355,11 @@
   \the\everydisplay
   \memdskips}
 
-\AtBeginDocument{
-  \let\m@m@xfloat\@xfloat
-  \def\@xfloat #1[#2]{%
-    \m@m@xfloat #1[#2]%
-    \def\baselinestretch{\m@m@float@spacing}%
-    \normalsize}
-}
+\let\m@m@xfloat\@xfloat
+\def\@xfloat #1[#2]{%
+  \m@m@xfloat #1[#2]%
+  \def\baselinestretch{\m@m@float@spacing}%
+  \normalsize}
 
 \newdimen\memPD
 \newenvironment{vminipage}{%
@@ -3304,45 +3280,27 @@
     \afterchapternum%
     \vskip\topskip}}
 
-\newcommand\chs@ell@helper[1]{%
-  \par%
-    \begin{adjustwidth}{}{-\chapindent}
-      \begin{tabularx}{\linewidth}{>{\raggedleft\arraybackslash}X|}%|emacs
-        \leavevmode\chapnumfont #1\vphantom{1}%
-        \hspace*{3.6pt}%
-        \rule[-13.5pt]{0pt}{14.8mm}%
-        \\%
-        \hline%
-      \end{tabularx}%
-    \end{adjustwidth}%
-    \par%
-  }%
-
 \makechapterstyle{ell}{%
   \chapterstyle{default}
   \renewcommand*{\chapnumfont}{\normalfont\HUGE\sffamily}
   \renewcommand*{\chaptitlefont}{\normalfont\huge\sffamily}
   \settowidth{\chapindent}{\chapnumfont 111}
-  % \renewcommand*{\chapterheadstart}{\begingroup
-  %   \vspace*{\beforechapskip}%
-  %   \begin{adjustwidth}{}{-\chapindent}%
-  %   \hrulefill
-  %   \smash{\rule{0.4pt}{15mm}}
-  %   \end{adjustwidth}\endgroup}
+  \renewcommand*{\chapterheadstart}{\begingroup
+    \vspace*{\beforechapskip}%
+    \begin{adjustwidth}{}{-\chapindent}%
+    \hrulefill
+    \smash{\rule{0.4pt}{15mm}}
+    \end{adjustwidth}\endgroup}
   \renewcommand*{\printchaptername}{}
   \renewcommand*{\chapternamenum}{}
   \renewcommand*{\printchapternum}{%
-    % \begin{adjustwidth}{}{-\chapindent}
-    % \hfill
-    % \raisebox{10mm}[0pt][0pt]{\chapnumfont \thechapter}%
-    %                           \hspace*{1em}
-    % \end{adjustwidth}\vspace*{-3.0\onelineskip}
-    \chs@ell@helper{\thechapter}%
-  }
-  \renewcommand\printchapternonum{%
-    \chs@ell@helper{}\afterchapternum}
+    \begin{adjustwidth}{}{-\chapindent}
+    \hfill
+    \raisebox{10mm}[0pt][0pt]{\chapnumfont \thechapter}%
+                              \hspace*{1em}
+    \end{adjustwidth}\vspace*{-3.0\onelineskip}}
   \renewcommand*{\printchaptertitle}[1]{%
-    %\vskip\onelineskip
+    \vskip\onelineskip
     \raggedleft {\chaptitlefont ##1}\par\nobreak}}
 
 \makechapterstyle{ger}{%
@@ -5921,17 +5879,14 @@
   \futurelet\@tempa\@BTendrule}
 
 \def\@BTrule[#1]{%
-  \ifx\longtable\undefined
-    \let\@BTswitch\@BTnormal
-  \else\ifx\hline\LT@hline
-    \let\@BTswitch\@BLTrule
-  \else
-    \let\@BTswitch\@BTnormal
-  \fi\fi
   \global\@thisrulewidth=#1\relax
   \ifnum\@thisruleclass=\tw@\vskip\@aboverulesep\else
   \ifnum\@lastruleclass=\z@\vskip\@aboverulesep\else
   \ifnum\@lastruleclass=\@ne\vskip\doublerulesep\fi\fi\fi
+
+  \ifx\longtable\undefined\let\@BTswitch\@BTnormal\else
+  \ifx\hline\LT@hline\let\@BTswitch\@BLTrule
+  \else\let\@BTswitch\@BTnormal\fi\fi
   \@BTswitch}
 
 \def\@BTnormal{%
@@ -6001,13 +5956,13 @@
   \multispan\@cmidla&\multispan\@cmidlb
 %%    \unskip\hskip \cmrkern@l\leaders\bktabrule{\@thisrulewidth}\hfill
     \unskip\hskip \cmrkern@l{%
-    \CT@arc@\leaders\bktabrule{\@thisrulewidth}\hfill\kern\z@}%
+    \CT@arc@\leaders\bktabrule{\@thisrulewidth}\hfill}%
     \hskip \cmrkern@r\cr}
 \def\@cmidruleb{%
   \multispan\@cmidlb
 %%    \unskip\hskip \cmrkern@l\leaders\bktabrule{\@thisrulewidth}\hfill
   \unskip\hskip \cmrkern@l{%
-    \CT@arc@\leaders\bktabrule{\@thisrulewidth}\hfill\kern\z@}%
+    \CT@arc@\leaders\bktabrule{\@thisrulewidth}\hfill}%
     \hskip \cmrkern@r\cr}
 
 \def\morecmidrules{\noalign{\relax}}
@@ -6392,24 +6347,19 @@
 \def\end@dblfloat{%
   \@memlistsubcaptions{\@captype}\@memoldedblfloat}
 
-\AtBeginDocument{%
-  \@ifpackageloaded{fixltx2e}{%
-    \@ifpackagelater{fixltx2e}{2014/01/01}{}{% package older than 2014/01/01
-      \def\end@dblfloat{%
-        \if@twocolumn
-          \@endfloatbox
-          \ifnum\@floatpenalty<\z@
-            \@largefloatcheck
-            \global\dp\@currbox1sp %
-            \@cons\@deferlist\@currbox
-          \fi
-          \ifnum\@floatpenalty=-\@Mii \@Esphack\fi
-        \else
-          \end@float
-        \fi}%
-    }
-  }{}
-}
+\AtBeginDocument{\@ifpackageloaded{fixltx2e}{%
+  \def\end@dblfloat{%
+    \if@twocolumn
+      \@endfloatbox
+      \ifnum\@floatpenalty<\z@
+        \@largefloatcheck
+        \global\dp\@currbox1sp %
+        \@cons\@deferlist\@currbox
+      \fi
+      \ifnum\@floatpenalty=-\@Mii \@Esphack\fi
+    \else
+      \end@float
+    \fi}}{}}
 
 \def\mem@fb@botlist{\@botlist}
 \def\mem@fb@topblock{\suppressfloats[t]}
@@ -7229,21 +7179,12 @@
         \fi
       \fi
     \else%     oneside
-      % \scapmarglefttrue% 0 and 3
-      % \ifnum\m@mscapmarg>\@ne
-      %   \ifnum\m@mscapmarg<\thr@@
-      %     \scapmargleftfalse
-      %   \fi
-      % \fi
-      \ifcase\m@mscapmarg\relax% 0
-        \scapmarglefttrue%
-      \or% 1
-        \scapmargleftfalse%
-      \or% 2
-        \scapmargleftfalse%
-      \or% 3
-        \scapmarglefttrue%
-      \fi%
+      \scapmarglefttrue
+      \ifnum\m@mscapmarg>\@ne
+        \ifnum\m@mscapmarg<\thr@@
+          \scapmargleftfalse
+        \fi
+      \fi
     \fi}
 
 \newcommand*{\overridescapmargin}[1]{%
@@ -8566,18 +8507,14 @@
   \vss}}
 
 \renewcommand{\raggedbottom}{%
-  \def\mem@flshbot{01}%
   \def\@textbottom{\vskip\z@ plus.0001fil}%
   \let\@texttop\@mkidx}
 \renewcommand{\flushbottom}{%
-  \def\mem@flshbot{00}%
   \let\@textbottom\relax
   \let\@texttop\@mkidx}
 \let\@texttop\@mkidx
-\flushbottom
 
 \newcommand*{\sloppybottom}{%
-  \def\mem@flshbot{01}%
   \def\@textbottom{\vskip \z@ \@plus.0001fil \@minus .95\topskip}%
   \topskip=1\topskip \@plus 0.625\topskip \@minus .95\topskip
   \def\@texttop{\vskip \z@ \@plus -0.625\topskip \@minus -0.95\topskip}}
@@ -9494,9 +9431,7 @@
 
 \newcommand{\m@make@footstart}[1]{%
   \@namedef{@footstart#1}{%
-    %\vskip\bigskipamount
-    \mem@if@flushbottomF\m@mopfn@bottom
-    \vskip\skip\csname footins#1\endcsname
+    \vskip\bigskipamount
     \leftskip=\z@
     \rightskip=\z@
     \footnoterule}}
@@ -9917,72 +9852,36 @@
     \setbox\@tempboxa\vsplit\@cclv to\z@ \unvbox\@tempboxa
     \setbox\@tempboxa\box\@cclv
     \xdef\@deferlist{\@toplist\@botlist\@deferlist}%
-    \global \let \@toplist \@empty
-    \global \let \@botlist \@empty
-    \global \@colroom \@colht
+    \global\let\@toplist\@empty
+    \global\let\@botlist\@empty
+    \global\@colroom\@colht
     \ifx \@currlist\@empty
     \else
-       \@latexerr{Float(s) lost}\@ehb
-       \global \let \@currlist \@empty
+      \@latexerr{Float(s) lost}\@ehb
+      \global\let\@currlist\@empty
     \fi
     \@makefcolumn\@deferlist
     \@whilesw\if@fcolmade \fi{\@opcol\@makefcolumn\@deferlist}%
     \if@twocolumn
       \if@firstcolumn
-        \xdef\@deferlist{\@dbltoplist\@deferlist}%
-        \global \let \@dbltoplist \@empty
-        \global \@colht \textheight
+        \xdef\@dbldeferlist{\@dbltoplist\@dbldeferlist}%
+        \global\let\@dbltoplist\@empty
+        \global\@colht\textheight
         \begingroup
-           \@dblfloatplacement
-           \@makefcolumn\@deferlist
-           \@whilesw\if@fcolmade \fi{\@outputpage
-                                     \@makefcolumn\@deferlist}%
-         \endgroup
-       \else
+          \@dblfloatplacement
+          \@makefcolumn\@dbldeferlist
+          \@whilesw\if@fcolmade \fi{\@outputpage
+                                    \@makefcolumn\@dbldeferlist}%
+        \endgroup
+      \else
         \vbox{}\clearpage
       \fi
     \fi
-    \ifx\@deferlist\@empty \else\clearpage \fi
   \else
     \setbox\@cclv\vbox{\box\@cclv\vfil}%
     \@makecol\@opcol
     \clearpage
-  \fi
-  % older version
-  %   \setbox\@tempboxa\vsplit\@cclv to\z@ \unvbox\@tempboxa
-  %   \setbox\@tempboxa\box\@cclv
-  %   \xdef\@deferlist{\@toplist\@botlist\@deferlist}%
-  %   \global\let\@toplist\@empty
-  %   \global\let\@botlist\@empty
-  %   \global\@colroom\@colht
-  %   \ifx \@currlist\@empty
-  %   \else
-  %     \@latexerr{Float(s) lost}\@ehb
-  %     \global\let\@currlist\@empty
-  %   \fi
-  %   \@makefcolumn\@deferlist
-  %   \@whilesw\if@fcolmade \fi{\@opcol\@makefcolumn\@deferlist}%
-  %   \if@twocolumn
-  %     \if@firstcolumn
-  %       \xdef\@dbldeferlist{\@dbltoplist\@dbldeferlist}%
-  %       \global\let\@dbltoplist\@empty
-  %       \global\@colht\textheight
-  %       \begingroup
-  %         \@dblfloatplacement
-  %         \@makefcolumn\@dbldeferlist
-  %         \@whilesw\if@fcolmade \fi{\@outputpage
-  %                                   \@makefcolumn\@dbldeferlist}%
-  %       \endgroup
-  %     \else
-  %       \vbox{}\clearpage
-  %     \fi
-  %   \fi
-  % \else
-  %   \setbox\@cclv\vbox{\box\@cclv\vfil}%
-  %   \@makecol\@opcol
-  %   \clearpage
-  % \fi
-}
+  \fi}
 \gdef\@doclearpage{\mem@doclearpage}
 
 \newcommand*{\m@m@makecolfloats}{%
@@ -10008,7 +9907,6 @@
   \@tempdima\dp\@cclv
   \unvbox\@cclv
   \vskip-\@tempdima
-  \mem@if@flushbottomF\m@mopfn@bottom
   \vskip \skip\footins
   \color@begingroup
     \normalcolor
@@ -10020,7 +9918,6 @@
   \setbox\@outputbox \vbox{%
   \boxmaxdepth\@maxdepth
   \unvbox\@outputbox
-  \mem@if@flushbottomF\m@mopfn@bottom
   \vskip\skip\footins
   \color@begingroup
     \normalcolor
@@ -10035,30 +9932,30 @@
       \unvbox\@outputbox}
   \fi}
 
- % \gdef\mem@makecol{%
- %   \m@m@makecolintro
- %   \ifvoid\footins
- %     \setbox\@outputbox \box\@cclv
- %   \else
- %     \m@mopfootnote
- %   \fi
- %   \m@mdoextrafeet
- %   \m@m@makecolfloats
- %   \m@mopsidebar
- %   \m@m@makecoltext
- %   \global \maxdepth \@maxdepth}
+\gdef\mem@makecol{%
+  \m@m@makecolintro
+  \ifvoid\footins
+    \setbox\@outputbox \box\@cclv
+  \else
+    \m@mopfootnote
+  \fi
+  \m@mdoextrafeet
+  \m@m@makecolfloats
+  \m@mopsidebar
+  \m@m@makecoltext
+  \global \maxdepth \@maxdepth}
 
- % \gdef\mem@makecolbf{%
- %   \m@m@makecolintro
- %   \setbox\@outputbox \box\@cclv
- %   \m@m@makecolfloats
- %   \ifvoid\footins\else
- %     \m@mopfootnotebf
- %   \fi
- %   \m@mdoextrafeet
- %   \m@mopsidebar
- %   \m@m@makecoltext
- %   \global\maxdepth \@maxdepth}
+\gdef\mem@makecolbf{%
+  \m@m@makecolintro
+  \setbox\@outputbox \box\@cclv
+  \m@m@makecolfloats
+  \ifvoid\footins\else
+    \m@mopfootnotebf
+  \fi
+  \m@mdoextrafeet
+  \m@mopsidebar
+  \m@m@makecoltext
+  \global\maxdepth \@maxdepth}
 
 \gdef\mem@makecoldblf{%
   \m@m@makecolintro
@@ -10076,13 +9973,6 @@
 \newcommand{\feetabovefloat}{\gdef\@makecol{\mem@makecol}}
 \newcommand{\feetbelowfloat}{\gdef\@makecol{\mem@makecolbf}}
 \feetabovefloat
-
-\newcommand\feetatbottom{\def\m@mopfn@bottom{\vfill\relax}}
-\newcommand\feetbelowragged{\let\m@mopfn@bottom\relax}
-\feetbelowragged
-\newcommand\mem@if@flushbottomF[1]{%
-  \if\mem@flshbot\else#1\fi%
-}
 
  % \gdef\@reinserts{%
  % \ifvoid\footins\else\insert\footins{\unvbox\footins}\fi
@@ -10222,7 +10112,7 @@
       \unvbox\@outputbox}
   \fi}
 
-\gdef\mem@makecol{%
+\gdef\mem@makecol{
   \m@m@makecolintro
   \ifvoid\footins
     \setbox\@outputbox \box\@cclv
@@ -10236,7 +10126,7 @@
   \m@m@makecoltext
   \global \maxdepth \@maxdepth}
 
-\gdef\mem@makecolbf{%
+\gdef\mem@makecolbf{
   \m@m@makecolintro
   \setbox\@outputbox \box\@cclv
   \m@m@makecolfloats
@@ -12076,12 +11966,10 @@
   \raise.5ex\hbox{\slashfracstyle{#1}}\kern-.13em/%
   \kern-.15em\lower.25ex\hbox{\slashfracstyle{#2}}}
 
-\@ifundefined{textsubscript}{%
-  \DeclareRobustCommand*{\textsubscript}[1]{%
-    \@textsubscript{\selectfont#1}}
-  \providecommand*{\@textsubscript}[1]{%
-    {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}}
-}{}
+\DeclareRobustCommand*{\textsubscript}[1]{%
+  \@textsubscript{\selectfont#1}}
+\newcommand*{\@textsubscript}[1]{%
+  {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}}
 
 %%%%%%%%%%%%%%%%%%%% number formatting
 
@@ -12927,16 +12815,7 @@
   \counterwithout{table}{chapter}
   \counterwithout{footnote}{chapter}
   \counterwithout{equation}{chapter}
-  %\renewcommand{\chaptername}{}
-  \if@twoside
-    \addtopsmarks{headings}{}{%
-      \createmark{chapter}{left}{shownumber}{}{. \ }
-    }
-  \else
-    \addtopsmarks{headings}{}{%
-      \createmark{chapter}{right}{shownumber}{}{. \ }
-    }
-  \fi
+  \renewcommand{\chaptername}{}
   \renewcommand{\maketitlehookb}{%
     \vskip -1.5\topsep\vskip -1.5\partopsep}
   \renewcommand{\maketitlehookc}{%
@@ -12969,7 +12848,7 @@
 \EmulatedPackage{abstract}[2008/07/23]
 \EmulatedPackage{appendix}[2008/07/23]
 \EmulatedPackage{array}[2008/09/09]
-\EmulatedPackage{booktabs}[2016/05/16]
+\EmulatedPackage{booktabs}[2008/07/23]
 \EmulatedPackage{ccaption}[2008/07/23]
 \EmulatedPackage{changepage}[2008/07/23]
 \EmulatedPackage{chngcntr}[2008/07/23]
@@ -13013,9 +12892,10 @@
     You are using the caption package with the memoir class.
     To prepare we will now reset all captioning macros and
     configurations to kernel defaults, and then let the
-    caption package take over. Please remember to use^^J
-    the caption package interfaces in order to^^J
-    configure your captions}
+    caption package take over. Please remember to use the
+    caption package interfaces in order to configure
+    your captions.
+  }
 
   \long\def\@makecaption##1##2{%
     \vskip\abovecaptionskip
