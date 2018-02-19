@@ -1,0 +1,8 @@
+sudo: required
+dist: trusty
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y --no-install-recommends texlive-full
+script:
+- mkdir build
+- pdflatex -interaction=nonstopmode -halt-on-error -output-directory build thesis.tex
