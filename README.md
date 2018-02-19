@@ -14,6 +14,11 @@ If you would like to import this template into ShareLatex, perform the following
 1. Click "Select a .zip file"
 1. Select the ZIP you just downloaded
 
+**:warning: Important! :warning:**
+
+ShareLatex does not parse the `*.ps` files in `img/`.
+These files should therefore be manually uploaded to the ShareLatex project to have a non-erroring build.
+
 ## Build instructions
 
 If you would like to build this project on your local machine, ensure that `texlive-full` is installed.
