@@ -1,7 +1,7 @@
 # File: Makefile
 SHELL           = /bin/bash
 PROJECT         = thesis
-DIRECTORY			  = -output-directory build
+DIRECTORY			  = -outdir=build
 
 .PHONY          = all clean
 
@@ -15,10 +15,7 @@ view: $(PROJECT).pdf
 	acroread $(<)
 
 %.pdf: %.tex Makefile *.tex *.sty
-	pdflatex $(DIRECTORY) $(<)
-	-bibtex $(PROJECT)
-	pdflatex $(DIRECTORY) $(<)
-	pdflatex $(DIRECTORY) $(<)
+	latexmk -bibtex -pdf $(DIRECTORY) $(<)
 
 force:
 	$(MAKE) -W $(PROJECT).tex

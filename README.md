@@ -2,6 +2,8 @@
 
 This repository hosts the source code for the official LateX template for a master thesis at SERG-Delft.
 
+If you are unfamiliar with LateX, you can check out the following guide: https://github.com/dspinellis/latex-advice
+
 ## Import for ShareLatex
 
 If you would like to import this template into ShareLatex, perform the following steps:
@@ -22,10 +24,11 @@ These files should therefore be manually uploaded to the ShareLatex project to h
 ## Build instructions
 
 If you would like to build this project on your local machine, ensure that `texlive-full` is installed.
-You can follow the instructions on https://www.tug.org/texlive/quickinstall.html but the TLDR for Linux systems is:
+You can follow the instructions on https://www.tug.org/texlive/quickinstall.html but the TLDR for Debian-based systems is:
 
 ```bash
 sudo apt-get install texlive-full
+sudo apt-get install latexmk
 ```
 
 Then run `make` and the project should build.
