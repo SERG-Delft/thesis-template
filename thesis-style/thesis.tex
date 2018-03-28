@@ -24,6 +24,9 @@
 
 \usepackage{hyperref}
 
+% Used in the bibliography to enable \citeauthor{citation}
+\usepackage[numbers]{natbib}
+
 % Ensure that urls longer than the page width are broken up
 % Based on the answer of StackOverflow user "xamde":
 % https://tex.stackexchange.com/a/10401/155506
@@ -105,7 +108,7 @@ ThePlace, the Netherlands\\
 \include{related_work} 
 \include{conclusions_and_future_work} 
 
-\bibliographystyle{plain}
+\bibliographystyle{plainnat}
 \bibliography{thesis}
 
 \appendix
