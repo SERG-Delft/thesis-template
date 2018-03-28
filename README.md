@@ -2,7 +2,7 @@
 
 This repository hosts the source code for the official LateX template for a master thesis at SERG-Delft.
 
-If you are unfamiliar with LateX, you can check out the following guide: https://github.com/dspinellis/latex-advice
+We reccomend you read and follow suggestions from the [LaTeX advice guide](https://github.com/dspinellis/latex-advice).
 
 ## Import for ShareLatex
 
