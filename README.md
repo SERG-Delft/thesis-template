@@ -1,8 +1,21 @@
 # Official SERG-Delft template master thesis
 
-This repository hosts the source code for the official LateX template for a master thesis at SERG-Delft.
+This repository hosts the source code of the official LateX template for a master thesis at SERG-Delft.
+The latest release can be downloaded as a ZIP from [the GitHub relases page](https://github.com/SERG-Delft/thesis-template/releases).
 
 We reccomend you read and follow suggestions from the [LaTeX advice guide](https://github.com/dspinellis/latex-advice).
+
+## Build instructions
+
+If you would like to build this project on your local machine, ensure that `texlive-full` is installed.
+You can follow the instructions on https://www.tug.org/texlive/quickinstall.html but the TLDR for Debian-based systems is:
+
+```bash
+sudo apt-get install texlive-full
+sudo apt-get install latexmk
+```
+
+Then run `make` and the project should build.
 
 ## Import for ShareLatex
 
@@ -20,15 +33,3 @@ If you would like to import this template into ShareLatex, perform the following
 
 ShareLatex does not parse the `*.ps` files in `img/`.
 These files should therefore be manually uploaded to the ShareLatex project to have a non-erroring build.
-
-## Build instructions
-
-If you would like to build this project on your local machine, ensure that `texlive-full` is installed.
-You can follow the instructions on https://www.tug.org/texlive/quickinstall.html but the TLDR for Debian-based systems is:
-
-```bash
-sudo apt-get install texlive-full
-sudo apt-get install latexmk
-```
-
-Then run `make` and the project should build.
