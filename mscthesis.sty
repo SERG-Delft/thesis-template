@@ -1,7 +1,7 @@
 
 
 %---------------------------------------------------------------------%
-%                     Define header and footer                        %    
+%                     Define header and footer                        %
 %---------------------------------------------------------------------%
 %
 % Dropped fancy plain as it is essentially included in memoir already.
@@ -21,7 +21,7 @@
 \pagestyle{ruled}
 
 %---------------------------------------------------------------------%
-%                     Chapter headings                                %    
+%                     Chapter headings                                %
 %---------------------------------------------------------------------%
 \renewcommand{\printchaptertitle}[1]{\raggedleft{\textbf{\Huge{#1}}}}
 
@@ -33,7 +33,7 @@
 \renewcommand{\afterchapternum}{\vskip\onelineskip\hrule\vskip\onelineskip}%
 
 %---------------------------------------------------------------------%
-%                     Define new variables                            %    
+%                     Define new variables                            %
 %---------------------------------------------------------------------%
 
 \gdef\theauthor{\@author}
@@ -44,7 +44,6 @@
 \gdef\@subtitle{please define subtitle}
 \gdef\@authoremail{please define authoremail}
 \gdef\@university{please define university}
-\gdef\@birthplace{please define birthplace}
 \gdef\@studentid{please define studentid}
 
 \def\chair#1{\gdef\@chair{#1}}
@@ -56,7 +55,7 @@
 \def\authoremail#1{\gdef\@authoremail{#1}}
 \def\university#1{\gdef\@university{#1}}
 \def\company#1{\gdef\@company{#1}\company@definedtrue}
-\def\birthplace#1{\gdef\@birthplace{#1}}
+\def\birthplace#1{\gdef\@birthplace{#1}\birthplace@definedtrue}
 \def\studentid#1{\gdef\@studentid{#1}}
 
 \def\colophon#1{\gdef\@colophon{#1}}
@@ -68,6 +67,7 @@
 \newif\ifexternal@supervisor    \external@supervisorfalse
 \newif\ifcommittee@member       \committee@memberfalse
 \newif\ifcompany@defined        \company@definedfalse
+\newif\ifbirthplace@defined     \birthplace@definedfalse
 
 \university{%
 \hskip-10pt{\includegraphics[height=2cm]{img/tudelft_logo_bw.eps}}\\[-8pt]
@@ -79,7 +79,7 @@ Delft, the Netherlands \\
 }
 
 %---------------------------------------------------------------------%
-%                     Title page                                      %    
+%                     Title page                                      %
 %---------------------------------------------------------------------%
 
 \date{}
@@ -132,16 +132,18 @@ in
 {\large \@MAJOR}
 \vskip 2em
 by
-\vskip 2em 
+\vskip 2em
 {\large \begin{tabular}[t]{c}
 \@author \\
+\ifbirthplace@defined
 born in \@birthplace{}
+\fi
 \end{tabular}}
 \vfill
-\ifcompany@defined 
+\ifcompany@defined
   \end{center}
   \begin{tabular}{@{}l@{}r@{}}
-    \begin{minipage}[b]{.54\textwidth}\@university\end{minipage} & 
+    \begin{minipage}[b]{.54\textwidth}\@university\end{minipage} &
     \begin{minipage}[b]{.46\textwidth}\flushright\@company\end{minipage}
   \end{tabular}
 \else
@@ -188,7 +190,3 @@ Committee Member: & \@committeemember\\
 \\\\\\\end{tabular}
 \cleardoublepage\endgroup
 }
-
-
-
-
