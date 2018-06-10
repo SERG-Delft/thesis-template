@@ -15,3 +15,6 @@ pdf: $(PROJECT).pdf
 
 force:
 	$(MAKE) -W $(PROJECT).tex
+
+clean:
+	rm -rf build/

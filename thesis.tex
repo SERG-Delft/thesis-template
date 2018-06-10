@@ -9,7 +9,7 @@
 % %% The package 'algorithm' is useful, but incompatible with memoir.
 % %% Cor-Paul Bezemer / http://homes.esat.kuleuven.be/~dvherten/esatthesis.html
 % %% suggest the following fix:
-\let\newfloat\undefined \usepackage{algorithmic} 
+\let\newfloat\undefined \usepackage{algorithmic}
 \usepackage{algorithm}
 
 % Include right (LaTeX/PDFLaTeX) graphics package
@@ -22,7 +22,7 @@
 %\usepackage[pdftex]{color}
 %\fi
 
-\usepackage{hyperref}
+\usepackage[bookmarks=false, hidelinks]{hyperref}
 
 % Used in the bibliography to enable \citeauthor{citation}
 \usepackage[numbers]{natbib}
@@ -39,15 +39,15 @@
   \do\Y\do\Z}
 
 %---------------------------------------------------------------------%
-%                     Options                                         %    
+%                     Options                                         %
 %---------------------------------------------------------------------%
 
 \title{Software Engineering Research Group \\MSc Thesis Style}
 \subtitle{Version of \today}
 % The final version of your thesis should typically use a different
 % subtitle without the current date, for example
-%\subtitle{Master's Thesis} 
-% or remove the subtitle by uncommenting the following line: 
+%\subtitle{Master's Thesis}
+% or remove the subtitle by uncommenting the following line:
 %\subtitle{}
 
 \author{Leon Moonen}                               % CHANGE TO YOUR NAME
@@ -74,7 +74,7 @@ ThePlace, the Netherlands\\
 \colophon{\noindent
   \copyright{} \the\year \: \theauthor. \emph{Note that this notice is for demonstration
   purposes and that the \LaTeX{} style and document source are free to
-  use as basis for your MSc thesis.} \\[1em] 
+  use as basis for your MSc thesis.} \\[1em]
   Cover picture: A ``random'' maze generated in postscript.
 }
 
@@ -103,10 +103,10 @@ ThePlace, the Netherlands\\
 \cleardoublepage\listoffigures
 \cleardoublepage\mainmatter
 
-\include{introduction} 
-\include{chapter} 
-\include{related_work} 
-\include{conclusions_and_future_work} 
+\include{introduction}
+\include{chapter}
+\include{related_work}
+\include{conclusions_and_future_work}
 
 \bibliographystyle{plainnat}
 \bibliography{thesis}
