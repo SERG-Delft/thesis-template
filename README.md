@@ -3,7 +3,7 @@
 This repository hosts the source code of the official LateX template for a master thesis at SERG-Delft.
 The latest release can be downloaded as a ZIP from [the GitHub relases page](https://github.com/SERG-Delft/thesis-template/releases).
 
-We reccomend you read and follow suggestions from the [LaTeX advice guide](https://github.com/dspinellis/latex-advice).
+We recommend you read and follow suggestions from the [LaTeX advice guide](https://github.com/dspinellis/latex-advice).
 
 ## Build instructions
 
