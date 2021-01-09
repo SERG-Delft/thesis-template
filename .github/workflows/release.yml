@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Release
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -35,8 +33,11 @@ jobs:
         with:
           # The root LaTeX file to be compiled
           root_file: thesis.tex
+      - shell: bash
+        run: |
+          mv thesis.pdf 'Current State of Thesis ${{ steps.get-date.outputs.date }}.pdf'
       - name: Upload thesis
         uses: actions/upload-artifact@v2
         with:
-          name: Current State of Thesis ${{ steps.get-date.outputs.date }}.pdf
-          path: thesis.pdf
+          path: Current State of Thesis ${{ steps.get-date.outputs.date }}.pdf
+          name: Current State of Thesis
