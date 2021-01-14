@@ -1,0 +1,43 @@
+name: Release
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "::set-output name=minute::$(/bin/date -u "+%M")"
+          echo "::set-output name=week::$(/bin/date -u "+%U")"
+          echo "::set-output name=date::$(/bin/date -u "+%Y-%m-%d")"
+          echo "::set-output name=hour::$(/bin/date -u "+%H")"
+        shell: bash
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: LaTeX compilation
+        # You may pin to the exact commit or the version.
+        # uses: dante-ev/latex-action@259e5ff953ad4d4616fbd09cc87a526ee5c4499a
+        uses: xu-cheng/latex-action@v2
+        with:
+          # The root LaTeX file to be compiled
+          root_file: thesis.tex
+      - shell: bash
+        run: |
+          mv thesis.pdf 'Current State of Thesis ${{ steps.get-date.outputs.date }}.pdf'
+      - name: Upload thesis
+        uses: actions/upload-artifact@v2
+        with:
+          path: Current State of Thesis ${{ steps.get-date.outputs.date }}.pdf
+          name: Current State of Thesis
